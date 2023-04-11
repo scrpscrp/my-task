@@ -8,6 +8,8 @@ import { BookService } from './services/books.service';
 import { TableComponent } from './components/table/table.component';
 import { TableModule } from 'primeng/table';
 import { FilterComponent } from './components/filter/filter.component';
+import { SliderModule } from 'primeng/slider';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -20,7 +22,10 @@ import { FilterComponent } from './components/filter/filter.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule, 
-    TableModule
+    TableModule,
+    SliderModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [BookService],
   bootstrap: [AppComponent]
