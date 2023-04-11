@@ -12,7 +12,7 @@
         </ng-template>
         <ng-template pTemplate="header">
             <tr>
-                <th pSortableColumn="title" class="header__title">Title<p-sortIcon onClick="test()"
+                <th pSortableColumn="title" class="header__title">Title<p-sortIcon [onClick]="test()"
                         field="title"></p-sortIcon></th>
                 <th pSortableColumn="pageCount" class="header__title">Pages<p-sortIcon field="pages"></p-sortIcon>
                 </th>
