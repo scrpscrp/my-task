@@ -1,0 +1,34 @@
+<ng-container *ngIf="(books$ | async) as books">
+    <p-table #dt [value]="books" [globalFilterFields]="['title']" [tableStyle]="{ 'min-width': '50rem' }"
+        [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <ng-template pTemplate="caption">
+            <div class="flex">
+                <span class="p-input-icon-left ml-auto">
+                    <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                        placeholder="Search" />
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="title" class="header__title">Title<p-sortIcon onClick="test()"
+                        field="title"></p-sortIcon></th>
+                <th pSortableColumn="pageCount" class="header__title">Pages<p-sortIcon field="pages"></p-sortIcon>
+                </th>
+                <th pSortableColumn="publishDate" class="header__title">Publish Date<p-sortIcon
+                        field="publish-date"></p-sortIcon></th>
+                <th pSortableColumn="qua" class="header__title">Quantity<p-sortIcon field="quantity"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-book>
+            <tr>
+                <td class="body__info">{{ book.title }}</td>
+                <td class="body__info">{{ book.pageCount }}</td>
+                <td class="body__info">{{ book.publishDate | date }}</td>
+                <td class="body__info">{{ book}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</ng-container>
