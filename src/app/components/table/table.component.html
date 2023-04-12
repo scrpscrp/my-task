@@ -7,7 +7,7 @@
             [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <ng-template pTemplate="caption">
-                <div class="test">
+                <div class="navigation">
                     <div class="search-container">
                         <span class="p-input-icon-left ml-auto">
                             <i class="pi pi-search"></i>
@@ -16,7 +16,7 @@
                         </span>
                     </div>
                     <div (click)="openModal()">
-                        <h3 class="add-book">ADD BOOK + </h3>
+                        <p-button class="button__regular" styleClass="p-button-sm" label="Add book +"></p-button>
                     </div>
                     <div class="datepicker">
                         <p-calendar placeholder="Range" [(ngModel)]="rangeDates" selectionMode="range"
@@ -28,17 +28,20 @@
                             </ng-template>
                         </p-calendar>
                     </div>
-                    <p-button label="Show Chart" styleClass="p-button-sm" (click)="closeChart()"></p-button>
+                    <p-button class="button__regular" (click)="closeChart()" styleClass="p-button-sm"
+                        label="Show Chart"></p-button>
                 </div>
-                <div>
-                    <button>Export Excel</button>
-                    <button>Export PDF</button>
+                <div class="buttons__block">
+                    <button class="buttons__block-regular" (click)="exportExcel(books)">Export
+                        Excel</button>
+                    <button class="buttons__block-regular" (click)="exportPDF(books)">Export
+                        PDF</button>
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <!-- <th pSortableColumn="title" class="header__title">Title<p-sortIcon field="title"></p-sortIcon></th> -->
-                    <th (click)="customTitleSorter()" class="header__title">Title<p-sortIcon field="title"></p-sortIcon>
+                    <th (click)="customTitleSorter()" class="header__title title">Title<p-sortIcon
+                            field="title"></p-sortIcon>
                     </th>
                     <th pSortableColumn="pageCount" class="header__title">Pages<p-sortIcon field="pages"></p-sortIcon>
                     </th>
@@ -52,13 +55,13 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-book>
-                <tr [class.selected]="book === selectedBook" (click)="selectedBook = book">
-                    <td class="body__info">{{ book.title }}</td>
+                <tr [class.selected]="book === selectedBook" (click)="select(book)">
+                    <td class="body__info title">{{ book.title }}</td>
                     <td class="body__info">{{ book.pageCount }}</td>
                     <td class="body__info">{{ book.publishDate | date }} </td>
                     <td class="body__info edit-book" (click)="editBook(book)"><span><i class="pi pi-cog"></i></span>
                     </td>
-                    <td class="body__info">{{ book.description}}</td>
+                    <td class="body__info description">{{ book.description}}</td>
                 </tr>
             </ng-template>
         </p-table>

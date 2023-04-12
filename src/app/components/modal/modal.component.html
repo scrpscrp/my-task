@@ -1,5 +1,9 @@
 <div class="backdrop">
     <div class="modal">
+        <div class="modal-header">
+            <h2 class="modal-title">{{ modalTitle | async }}</h2>
+            <i class="pi pi-minus" (click)="onCloseModal()"></i>
+        </div>
         <form class="add-book" [formGroup]="form">
             <h3 class="modal__input-title">Title</h3>
             <input pInputText class="add-book__input" type="text" formControlName="title" />
@@ -12,13 +16,13 @@
         </form>
         <div class="buttoms">
             <ng-container *ngIf="bookForEditing; else addBook">
-                <p-button styleClass="p-button-sm" (click)="onEditBook()" [disabled]="!isFormValid()">Edit
+                <p-button styleClass="p-button-sm tst" (click)="onEditBook()" [disabled]="!isFormValid()">Edit
                     Book</p-button>
             </ng-container>
             <ng-template #addBook>
                 <p-button styleClass="p-button-sm" (click)="onAddBook()" [disabled]="!isFormValid()">Add Book</p-button>
             </ng-template>
-            <p-button styleClass="p-button-sm" (click)="close.emit()">close</p-button>
+            <p-button styleClass="p-button-sm" (click)="onCancelClicked()">Cancel</p-button>
         </div>
     </div>
 </div>

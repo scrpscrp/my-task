@@ -3,6 +3,7 @@ import { Table } from 'primeng/table';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { BookInterface } from 'src/app/interfaces/books.interface';
 import { BookService } from 'src/app/services/books.service';
+import { ExportsService } from 'src/app/services/exports.service';
 
 @Component({
   selector: 'app-table',
@@ -21,11 +22,10 @@ export class TableComponent implements OnInit {
   sortOrder: string = 'asc';
   showModal: boolean = false;
 
-  constructor(private booksService: BookService) { }
+  constructor(private booksService: BookService, private exportService: ExportsService) { }
 
   customTitleSorter() {
-    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc'; // toggle sort order
-    // Trigger observable to re-sort and re-render
+    this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
     this.books$ = this.booksService.getAllBooks().pipe(
       map(books => books.map(book => {
         const numberStr = book.title.match(/\d+/)?.[0];
@@ -39,9 +39,7 @@ export class TableComponent implements OnInit {
           booksWithNumber.sort((a, b) => b.number - a.number);
         }
       })
-      );
-
-
+    );
   }
 
   ngOnInit(): void {
@@ -62,17 +60,15 @@ export class TableComponent implements OnInit {
     this.maxDate = new Date();
     this.maxDate.setMonth(nextMonth);
     this.maxDate.setFullYear(nextYear);
-
     let invalidDate = new Date();
     invalidDate.setDate(today.getDate() - 1);
   }
 
-  applyFilterGlobal($event: any, stringVal: any) {
+  applyFilterGlobal($event: any, stringVal: string) {
     this.dt!.filterGlobal(($event.target as HTMLInputElement).value, stringVal);
   }
 
   onSelectDates() {
-    console.log(this.rangeDates)
     const [startDate, endDate] = this.rangeDates;
 
     if (startDate && endDate) {
@@ -122,5 +118,20 @@ export class TableComponent implements OnInit {
   editBook(book: BookInterface) {
     this.bookForEditing$.next(book);
     this.openModal();
+  }
+
+  exportExcel(books: BookInterface[]) {
+    this.exportService.exportExcel(books, 'books');
+  }
+
+  exportPDF(books: BookInterface[]) {
+    this.exportService.exportPDF(books, 'books');
+  }
+
+  select(book: BookInterface) {
+    if(this.selectedBook === book) {
+      return this.selectedBook = null;
+    }
+      return this.selectedBook = book;
   }
 }

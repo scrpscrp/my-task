@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs';
 import { AddEditBookRequestModel } from 'src/app/interfaces/add-edit-book.interface';
 import { BookInterface } from 'src/app/interfaces/books.interface';
 import { BookService } from 'src/app/services/books.service';
@@ -15,12 +16,15 @@ export class ModalComponent implements OnInit {
   @Input() bookForEditing: BookInterface = null;
 
   form: FormGroup;
-  
-  constructor(private booksService: BookService) {}
+  modalTitle: BehaviorSubject<string> = new BehaviorSubject<string>(null);
+
+  constructor(private booksService: BookService) { }
 
   ngOnInit(): void {
     this.createForm();
     this.populateFormValues();
+    this.stashBookDataIntoStorage();
+    this.configureModalTitle();
   }
 
   private createForm(): void {
@@ -33,24 +37,55 @@ export class ModalComponent implements OnInit {
   }
 
   private populateFormValues(): void {
-    if (this.bookForEditing !== null) {
+    const storageData = localStorage.getItem('bookData');
+    const bookId = localStorage.getItem('bookId');
+
+    if (this.bookForEditing !== null && this.bookForEditing.id.toString() !== bookId) {
       const formValues: Record<string, any> = {
         title: this.bookForEditing.title ?? '',
         description: this.bookForEditing.description ?? '',
         pageCount: this.bookForEditing.pageCount ?? '',
-        publishDate: this.bookForEditing.publishDate ? new Date(this.bookForEditing.publishDate) : null // create Date object from string
+        publishDate: this.bookForEditing.publishDate ? new Date(this.bookForEditing.publishDate) : null
       };
-  
-      // Loop over each control in the form group and set its value to the corresponding value in formValues
       Object.keys(this.form.controls).forEach(key => {
         const control = this.form.get(key);
-        if (control) { // Add check for null or undefined control
+        if (control) {
           control.setValue(formValues[key]);
         }
       });
-  
+
       this.form.markAsPristine();
     }
+    else {
+      if (storageData) {
+        const parsedData = JSON.parse(storageData);
+
+        const formValues: Record<string, any> = {
+          title: parsedData.title ?? '',
+          description: parsedData.description ?? '',
+          pageCount: parsedData.pageCount ?? '',
+          publishDate: parsedData.publishDate ? new Date(parsedData.publishDate) : null
+        };
+        Object.keys(this.form.controls).forEach(key => {
+          const control = this.form.get(key);
+          if (control) {
+            control.setValue(formValues[key]);
+          }
+        });
+
+        this.form.markAsPristine();
+      }
+    }
+  }
+
+  private stashBookDataIntoStorage() {
+    this.form.valueChanges.subscribe(() => {
+      localStorage.setItem('bookData', JSON.stringify(this.form.value));
+      if (this.bookForEditing !== null) {
+        const bookId: string = this.bookForEditing.id.toString();
+        localStorage.setItem('bookId', bookId);
+      }
+    })
   }
 
   isFormValid(): boolean {
@@ -65,7 +100,6 @@ export class ModalComponent implements OnInit {
         PageCount: this.form.value.pageCount,
         PublishDate: this.form.value.publishDate
       };
-
       this.booksService.editBook(this.bookForEditing.id, formValues).subscribe();
     }
   }
@@ -78,9 +112,27 @@ export class ModalComponent implements OnInit {
         PageCount: this.form.value.pageCount,
         PublishDate: this.form.value.publishDate
       };
-
       this.booksService.addBook(formValues).subscribe();
     }
+  }
+
+  onCancelClicked() {
+    localStorage.removeItem('bookId');
+    localStorage.removeItem('bookData');
+    this.onCloseModal();
+  }
+
+  onCloseModal() {
+    this.close.emit();
+  }
+
+  private configureModalTitle() {
+    let title: string = '';
+    if (this.bookForEditing !== null) {
+      title = 'Edit Book: ' + this.bookForEditing.title;
+    } else title = 'Add New Book'
+
+    this.modalTitle.next(title);
   }
 
 }

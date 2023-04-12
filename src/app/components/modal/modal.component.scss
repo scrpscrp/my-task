@@ -37,3 +37,24 @@
     justify-content: space-between;
     margin-top: 10px;
 }
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    color: #154252;
+
+    .pi {
+        cursor: pointer;
+    }
+
+    .modal-title {
+        margin: 0;
+    }
+
+}
+
+:host ::ng-deep p-button button:disabled {
+    color: #154252;
+    background-color: rgb(80, 80, 80) !important;
+}
