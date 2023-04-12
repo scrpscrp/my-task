@@ -1,17 +1,23 @@
 <div class="backdrop">
     <div class="modal">
-        <form class="add-book">
+        <form class="add-book" [formGroup]="form">
             <h3 class="modal__input-title">Title</h3>
-            <input pInputText class="add-book__input" type="text" placeholder="Title" />
+            <input pInputText class="add-book__input" type="text" formControlName="title" />
             <h3 class="modal__input-title">Total pages</h3>
-            <input pInputText class="add-book__input" type="number" placeholder="Page count" />
+            <input pInputText class="add-book__input" type="number" formControlName="pageCount" />
             <h3 class="modal__input-title">Publish date</h3>
-            <input pInputText class="add-book__input" type="date" placeholder="Publish date" />
+            <p-calendar formControlName="publishDate"></p-calendar>
             <h3 class="modal__input-title">Description</h3>
-            <textarea pInputText class="add-book__input" type="text" placeholder="Description"></textarea>
+            <textarea pInputText class="add-book__input" type="text" formControlName="description"></textarea>
         </form>
         <div class="buttoms">
-            <p-button styleClass="p-button-sm">Add</p-button>
+            <ng-container *ngIf="bookForEditing; else addBook">
+                <p-button styleClass="p-button-sm" (click)="onEditBook()" [disabled]="!isFormValid()">Edit
+                    Book</p-button>
+            </ng-container>
+            <ng-template #addBook>
+                <p-button styleClass="p-button-sm" (click)="onAddBook()" [disabled]="!isFormValid()">Add Book</p-button>
+            </ng-template>
             <p-button styleClass="p-button-sm" (click)="close.emit()">close</p-button>
         </div>
     </div>

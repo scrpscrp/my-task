@@ -4,11 +4,12 @@
     background-color: rgba(0, 0, 0, 0.342);
     position: absolute;
     z-index: 100;
+    position: fixed;
 }
 
 .modal {
     width: 50%;
-    background-color: aliceblue;
+    background-color: #a6d4e4;
     right: 25%;
     top: 15%;
     position: absolute;
@@ -17,10 +18,11 @@
     padding: 15px;
 
     &__input-title {
-        color: black;
+        color: #154252;
+        ;
     }
-}
 
+}
 
 .add-book__input {
     width: 100%;

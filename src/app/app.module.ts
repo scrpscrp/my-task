@@ -7,21 +7,22 @@ import { AppComponent } from './app.component';
 import { BookService } from './services/books.service';
 import { TableComponent } from './components/table/table.component';
 import { TableModule } from 'primeng/table';
-import { FilterComponent } from './components/filter/filter.component';
+
 import { SliderModule } from 'primeng/slider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarModule } from 'primeng/calendar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalComponent } from './components/modal/modal.component';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { ChartsComponent } from './components/charts/charts.component';
+import { ChartModule } from 'primeng/chart';
 
 @NgModule({
   declarations: [
     AppComponent,
     TableComponent,
-    FilterComponent,
     ModalComponent,
+    ChartsComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +34,8 @@ import { InputTextModule } from 'primeng/inputtext';
     ReactiveFormsModule,
     CalendarModule,
     BrowserAnimationsModule,
-    InputTextModule
+    InputTextModule,
+    ChartModule
   ],
   providers: [BookService],
   bootstrap: [AppComponent]

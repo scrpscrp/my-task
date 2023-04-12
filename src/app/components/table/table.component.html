@@ -1,4 +1,6 @@
-<app-modal *ngIf="showModal" (close)="showModal = false"></app-modal>
+<app-modal *ngIf="showModal" [bookForEditing]="bookForEditing$ | async" (close)="closeModal()">
+</app-modal>
+<app-charts *ngIf="chartModal" (closeChart)="closeChart()"></app-charts>
 <div class="wrapper">
     <ng-container *ngIf="(books$ | async) as books">
         <p-table #dt [value]="books" [globalFilterFields]="['title']" [tableStyle]="{ 'min-width': '50rem' }"
@@ -26,6 +28,11 @@
                             </ng-template>
                         </p-calendar>
                     </div>
+                    <p-button label="Show Chart" styleClass="p-button-sm" (click)="closeChart()"></p-button>
+                </div>
+                <div>
+                    <button>Export Excel</button>
+                    <button>Export PDF</button>
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
@@ -45,11 +52,12 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-book>
-                <tr>
+                <tr [class.selected]="book === selectedBook" (click)="selectedBook = book">
                     <td class="body__info">{{ book.title }}</td>
                     <td class="body__info">{{ book.pageCount }}</td>
                     <td class="body__info">{{ book.publishDate | date }} </td>
-                    <td class="body__info"><span><i class="pi pi-cog"></i></span></td>
+                    <td class="body__info edit-book" (click)="editBook(book)"><span><i class="pi pi-cog"></i></span>
+                    </td>
                     <td class="body__info">{{ book.description}}</td>
                 </tr>
             </ng-template>

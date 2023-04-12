@@ -2,6 +2,14 @@
     cursor: pointer;
 }
 
+.edit-book {
+    cursor: pointer;
+
+    &:hover {
+        color: rgb(84, 0, 162);
+    }
+}
+
 .wrapper {
     // width: 800px;
     display: flex;
@@ -28,4 +36,9 @@
     &:hover {
         background-color: #2d3c43;
     }
+}
+
+tr.selected {
+    background-color: #2d3743;
+    cursor: pointer;
 }

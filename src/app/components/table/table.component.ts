@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
-import { Observable, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { BookInterface } from 'src/app/interfaces/books.interface';
 import { BookService } from 'src/app/services/books.service';
 
@@ -11,11 +11,13 @@ import { BookService } from 'src/app/services/books.service';
 })
 export class TableComponent implements OnInit {
   @ViewChild('dt') dt: Table | undefined;
-
+  selectedBook: any;
+  chartModal: boolean = false;
   rangeDates: Date[] = [];
-  minDate: Date ;
-  maxDate: Date ;
+  minDate: Date;
+  maxDate: Date;
   books$: Observable<BookInterface[]> = this.booksService.getAllBooks();
+  bookForEditing$: BehaviorSubject<BookInterface> = new BehaviorSubject<BookInterface>(null);
   sortOrder: string = 'asc';
   showModal: boolean = false;
 
@@ -37,13 +39,13 @@ export class TableComponent implements OnInit {
           booksWithNumber.sort((a, b) => b.number - a.number);
         }
       })
-    );
+      );
+
 
   }
 
   ngOnInit(): void {
     this.configureCalendarOptions();
-    // this.invalidDates = [today,invalidDate];
   }
 
   private configureCalendarOptions() {
@@ -85,33 +87,40 @@ export class TableComponent implements OnInit {
 
   onClear() {
     this.books$ = this.booksService.getAllBooks();
-    console.log('aaa')
   }
 
   onSelectCurrentMonthRange() {
     const today = new Date();
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
     const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
     this.rangeDates = [firstDayOfMonth, lastDayOfMonth];
-
     this.onSelectDates();
   }
 
   onSelectCurrentYearRange() {
     const today = new Date();
     const currentYear = today.getFullYear();
-
     const firstDayOfYear = new Date(currentYear, 0, 1);
     const lastDayOfYear = new Date(currentYear, 11, 31);
-
     this.rangeDates = [firstDayOfYear, lastDayOfYear];
-
     this.onSelectDates();
   }
 
   openModal() {
-    console.log("open modal");
-    this.showModal = !this.showModal;
+    this.showModal = true;
+  }
+
+  closeModal() {
+    this.bookForEditing$.next(null);
+    this.showModal = false;
+  }
+
+  closeChart() {
+    this.chartModal = !this.chartModal;
+  }
+
+  editBook(book: BookInterface) {
+    this.bookForEditing$.next(book);
+    this.openModal();
   }
 }
