@@ -1,15 +1,31 @@
+<app-modal *ngIf="showModal" (close)="showModal = false"></app-modal>
 <div class="wrapper">
-    <app-filter></app-filter>
     <ng-container *ngIf="(books$ | async) as books">
         <p-table #dt [value]="books" [globalFilterFields]="['title']" [tableStyle]="{ 'min-width': '50rem' }"
             [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
             currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
             <ng-template pTemplate="caption">
-                <div class="flex">
-                    <span class="p-input-icon-left ml-auto">
-                        <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
-                            placeholder="Search" />
-                    </span>
+                <div class="test">
+                    <div class="search-container">
+                        <span class="p-input-icon-left ml-auto">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                                placeholder="Search" />
+                        </span>
+                    </div>
+                    <div (click)="openModal()">
+                        <h3 class="add-book">ADD BOOK + </h3>
+                    </div>
+                    <div class="datepicker">
+                        <p-calendar placeholder="Range" [(ngModel)]="rangeDates" selectionMode="range"
+                            [showButtonBar]="true" [readonlyInput]="true" inputId="range" (onSelect)="onSelectDates()"
+                            (onClearClick)="onClear()">
+                            <ng-template pTemplate="footer">
+                                <p-button (click)="onSelectCurrentMonthRange()">this month</p-button>
+                                <p-button (click)="onSelectCurrentYearRange()">this year</p-button>
+                            </ng-template>
+                        </p-calendar>
+                    </div>
                 </div>
             </ng-template>
             <ng-template pTemplate="header">
@@ -20,8 +36,11 @@
                     <th pSortableColumn="pageCount" class="header__title">Pages<p-sortIcon field="pages"></p-sortIcon>
                     </th>
                     <th pSortableColumn="publishDate" class="header__title">Publish Date<p-sortIcon
-                            field="publish-date"></p-sortIcon></th>
-                    <th pSortableColumn="qua" class="header__title">Quantity<p-sortIcon field="quantity"></p-sortIcon>
+                            field="publish-date">
+                        </p-sortIcon>
+                    </th>
+                    <th></th>
+                    <th pSortableColumn="qua" class="header__title">Description
                     </th>
                 </tr>
             </ng-template>
@@ -29,8 +48,9 @@
                 <tr>
                     <td class="body__info">{{ book.title }}</td>
                     <td class="body__info">{{ book.pageCount }}</td>
-                    <td class="body__info">{{ book.publishDate | date }}</td>
-                    <td class="body__info">{{ book}}</td>
+                    <td class="body__info">{{ book.publishDate | date }} </td>
+                    <td class="body__info"><span><i class="pi pi-cog"></i></span></td>
+                    <td class="body__info">{{ book.description}}</td>
                 </tr>
             </ng-template>
         </p-table>

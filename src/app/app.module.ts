@@ -10,6 +10,10 @@ import { TableModule } from 'primeng/table';
 import { FilterComponent } from './components/filter/filter.component';
 import { SliderModule } from 'primeng/slider';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CalendarModule } from 'primeng/calendar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ModalComponent } from './components/modal/modal.component';
+import { InputTextModule } from 'primeng/inputtext';
 
 
 @NgModule({
@@ -17,6 +21,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     AppComponent,
     TableComponent,
     FilterComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -25,7 +30,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TableModule,
     SliderModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CalendarModule,
+    BrowserAnimationsModule,
+    InputTextModule
   ],
   providers: [BookService],
   bootstrap: [AppComponent]

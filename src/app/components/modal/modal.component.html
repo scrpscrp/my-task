@@ -1,0 +1,18 @@
+<div class="backdrop">
+    <div class="modal">
+        <form class="add-book">
+            <h3 class="modal__input-title">Title</h3>
+            <input pInputText class="add-book__input" type="text" placeholder="Title" />
+            <h3 class="modal__input-title">Total pages</h3>
+            <input pInputText class="add-book__input" type="number" placeholder="Page count" />
+            <h3 class="modal__input-title">Publish date</h3>
+            <input pInputText class="add-book__input" type="date" placeholder="Publish date" />
+            <h3 class="modal__input-title">Description</h3>
+            <textarea pInputText class="add-book__input" type="text" placeholder="Description"></textarea>
+        </form>
+        <div class="buttoms">
+            <p-button styleClass="p-button-sm">Add</p-button>
+            <p-button styleClass="p-button-sm" (click)="close.emit()">close</p-button>
+        </div>
+    </div>
+</div>

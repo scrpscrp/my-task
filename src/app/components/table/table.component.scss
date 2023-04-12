@@ -3,9 +3,29 @@
 }
 
 .wrapper {
-    width: 800px;
+    // width: 800px;
     display: flex;
     margin: 0 auto;
+}
 
+.test {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 
+    .search-container,
+    .datepicker {
+        width: 40%;
+    }
+}
+
+.add-book {
+    background-color: #263238;
+    border-radius: 20px;
+    padding: 5px;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #2d3c43;
+    }
 }

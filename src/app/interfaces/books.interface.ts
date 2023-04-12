@@ -5,4 +5,5 @@ id: number;
 pageCount: number;
 publishDate: string;
 title: string;
+number: number;
 }
