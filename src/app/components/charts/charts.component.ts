@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BookInterface } from 'src/app/interfaces/books.interface';
-import { BookService } from 'src/app/services/books.service';
+import { BooksService } from 'src/app/services/books.service';
 
 @Component({
   selector: 'app-charts',
@@ -11,7 +11,7 @@ export class ChartsComponent implements OnInit  {
   @Output() closeChart = new EventEmitter<void>();
   @Input() books: BookInterface[] = [];
 
-  constructor(private bookService:BookService) {}
+  constructor(private bookService:BooksService) {}
 
   basicData: object;
   basicOptions: object;
@@ -72,7 +72,7 @@ export class ChartsComponent implements OnInit  {
         datasets: [
           {
             label: 'Books',
-            data: [year2022.length, year2023.length],
+            data: [year2023.length , year2022.length],
             backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
             borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
             borderWidth: 2

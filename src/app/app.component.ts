@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { BookService } from './services/books.service';
+
 
 
 @Component({
@@ -9,7 +9,7 @@ import { BookService } from './services/books.service';
 })
 
 export class AppComponent {
-  constructor (private test:BookService) {}
+  constructor () {}
   ngOnInit(): void {
 
   }

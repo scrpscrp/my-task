@@ -2,68 +2,67 @@
 </app-modal>
 <app-charts *ngIf="chartModal" (closeChart)="closeChart()"></app-charts>
 <div class="wrapper">
-    <ng-container *ngIf="(books$ | async) as books">
-        <p-table #dt [value]="books" [globalFilterFields]="['title']" [tableStyle]="{ 'min-width': '50rem' }"
-            [paginator]="true" [rows]="10" [showCurrentPageReport]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
-            <ng-template pTemplate="caption">
-                <div class="navigation">
-                    <div class="search-container">
-                        <span class="p-input-icon-left ml-auto">
-                            <i class="pi pi-search"></i>
-                            <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
-                                placeholder="Search" />
-                        </span>
-                    </div>
-                    <div (click)="openModal()">
-                        <p-button class="button__regular" styleClass="p-button-sm" label="Add book +"></p-button>
-                    </div>
-                    <div class="datepicker">
-                        <p-calendar placeholder="Range" [(ngModel)]="rangeDates" selectionMode="range"
-                            [showButtonBar]="true" [readonlyInput]="true" inputId="range" (onSelect)="onSelectDates()"
-                            (onClearClick)="onClear()">
-                            <ng-template pTemplate="footer">
-                                <p-button (click)="onSelectCurrentMonthRange()">this month</p-button>
-                                <p-button (click)="onSelectCurrentYearRange()">this year</p-button>
-                            </ng-template>
-                        </p-calendar>
-                    </div>
-                    <p-button class="button__regular" (click)="closeChart()" styleClass="p-button-sm"
-                        label="Show Chart"></p-button>
+    <p-table #dt [value]="books$ | async" [globalFilterFields]="['title']" [tableStyle]="{ 'min-width': '90rem' }"
+        [paginator]="true" [rows]="10" [showCurrentPageReport]="true" [loading]="isLoading | async"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+        <ng-template pTemplate="caption">
+            <div class="navigation">
+                <div class="search-container">
+                    <span class="p-input-icon-left ml-auto">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="applyFilterGlobal($event, 'contains')"
+                            placeholder="Search" />
+                    </span>
                 </div>
+                <div (click)="openModal()">
+                    <p-button class="button__regular" styleClass="p-button-sm" label="Add book +"></p-button>
+                </div>
+                <div class="datepicker">
+                    <p-calendar placeholder="Range" [(ngModel)]="rangeDates" selectionMode="range"
+                        [showButtonBar]="true" [readonlyInput]="true" inputId="range" (onSelect)="onSelectDates()"
+                        (onClearClick)="onClear()">
+                        <ng-template pTemplate="footer">
+                            <p-button (click)="onSelectCurrentMonthRange()">this month</p-button>
+                            <p-button (click)="onSelectCurrentYearRange()">this year</p-button>
+                        </ng-template>
+                    </p-calendar>
+                </div>
+                <p-button class="button__regular" (click)="closeChart()" styleClass="p-button-sm"
+                    label="Show Chart"></p-button>
+            </div>
+            <ng-container *ngIf="(books$ | async) as books">
                 <div class="buttons__block">
                     <button class="buttons__block-regular" (click)="exportExcel(books)">Export
                         Excel</button>
                     <button class="buttons__block-regular" (click)="exportPDF(books)">Export
                         PDF</button>
                 </div>
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th (click)="customTitleSorter()" class="header__title title">Title<p-sortIcon
-                            field="title"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="pageCount" class="header__title">Pages<p-sortIcon field="pages"></p-sortIcon>
-                    </th>
-                    <th pSortableColumn="publishDate" class="header__title">Publish Date<p-sortIcon
-                            field="publish-date">
-                        </p-sortIcon>
-                    </th>
-                    <th></th>
-                    <th pSortableColumn="qua" class="header__title">Description
-                    </th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-book>
-                <tr [class.selected]="book === selectedBook" (click)="select(book)">
-                    <td class="body__info title">{{ book.title }}</td>
-                    <td class="body__info">{{ book.pageCount }}</td>
-                    <td class="body__info">{{ book.publishDate | date }} </td>
-                    <td class="body__info edit-book" (click)="editBook(book)"><span><i class="pi pi-cog"></i></span>
-                    </td>
-                    <td class="body__info description">{{ book.description}}</td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </ng-container>
+            </ng-container>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th (click)="customTitleSorter()" class="header__title title">Title<p-sortIcon
+                        field="title"></p-sortIcon>
+                </th>
+                <th pSortableColumn="pageCount" class="header__title">Pages<p-sortIcon field="pages"></p-sortIcon>
+                </th>
+                <th pSortableColumn="publishDate" class="header__title">Publish Date<p-sortIcon field="publish-date">
+                    </p-sortIcon>
+                </th>
+                <th></th>
+                <th pSortableColumn="qua" class="header__title">Description
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-book>
+            <tr [class.selected]="book === selectedBook" (click)="select(book)">
+                <td class="body__info title">{{ book.title }}</td>
+                <td class="body__info">{{ book.pageCount }}</td>
+                <td class="body__info">{{ book.publishDate | date }} </td>
+                <td class="body__info edit-book" (click)="editBook(book)"><span><i class="pi pi-cog"></i></span>
+                </td>
+                <td class="body__info description">{{ book.description}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
 </div>

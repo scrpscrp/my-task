@@ -8,7 +8,7 @@ import { AddEditBookRequestModel } from '../interfaces/add-edit-book.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class BookService {
+export class BooksService {
   constructor(private http: HttpClient) { }
 
   getAllBooks() : Observable<BookInterface[]>{

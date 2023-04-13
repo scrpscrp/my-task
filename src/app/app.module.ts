@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BookService } from './services/books.service';
+import { BooksService } from './services/books.service';
 import { TableComponent } from './components/table/table.component';
 import { TableModule } from 'primeng/table';
 
@@ -37,7 +37,7 @@ import { ChartModule } from 'primeng/chart';
     InputTextModule,
     ChartModule
   ],
-  providers: [BookService],
+  providers: [BooksService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

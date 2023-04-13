@@ -3,21 +3,20 @@ import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
-import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExportsService {
-  fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-  fileExtension = '.xlsx';
-  constructor(private http: HttpClient) { }
+  fileType: string = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  fileExtension: string = '.xlsx';
+  constructor() { }
 
   public exportPDF(data: any[], fileName: string): void {
-    const doc = new jsPDF();
+    const doc: jsPDF = new jsPDF();
     data.forEach((row, index) => {
-      const keys = Object.keys(row);
-      const values = Object.values(row);
+      const keys: string[] = Object.keys(row);
+      const values: any = Object.values(row);
       doc.text(`${index + 1}.`, 10, (index + 1) * 10);
       keys.forEach((key, i) => {
         doc.text(`${key}: ${values[i]}`, 20 + i * 50, (index + 1) * 10);

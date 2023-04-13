@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AddEditBookRequestModel } from 'src/app/interfaces/add-edit-book.interface';
 import { BookInterface } from 'src/app/interfaces/books.interface';
-import { BookService } from 'src/app/services/books.service';
+import { BooksService } from 'src/app/services/books.service';
 
 @Component({
   selector: 'app-modal',
@@ -18,7 +18,7 @@ export class ModalComponent implements OnInit {
   form: FormGroup;
   modalTitle: BehaviorSubject<string> = new BehaviorSubject<string>(null);
 
-  constructor(private booksService: BookService) { }
+  constructor(private booksService: BooksService) { }
 
   ngOnInit(): void {
     this.createForm();

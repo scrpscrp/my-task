@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Table } from 'primeng/table';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { BookInterface } from 'src/app/interfaces/books.interface';
-import { BookService } from 'src/app/services/books.service';
+import { BooksService } from 'src/app/services/books.service';
 import { ExportsService } from 'src/app/services/exports.service';
 
 @Component({
@@ -21,10 +21,12 @@ export class TableComponent implements OnInit {
   bookForEditing$: BehaviorSubject<BookInterface> = new BehaviorSubject<BookInterface>(null);
   sortOrder: string = 'asc';
   showModal: boolean = false;
+  isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private booksService: BookService, private exportService: ExportsService) { }
+  constructor(private booksService: BooksService, private exportService: ExportsService) { }
 
   customTitleSorter() {
+    this.isLoading.next(true);
     this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
     this.books$ = this.booksService.getAllBooks().pipe(
       map(books => books.map(book => {
@@ -38,7 +40,8 @@ export class TableComponent implements OnInit {
         } else {
           booksWithNumber.sort((a, b) => b.number - a.number);
         }
-      })
+      }),
+      tap(()=>this.isLoading.next(false))
     );
   }
 
@@ -72,11 +75,13 @@ export class TableComponent implements OnInit {
     const [startDate, endDate] = this.rangeDates;
 
     if (startDate && endDate) {
+    this.isLoading.next(true);
       this.books$ = this.booksService.getAllBooks().pipe(
         map(books => books.filter(book => {
           const publishDate = new Date(book.publishDate);
           return publishDate >= startDate && publishDate <= endDate;
-        }))
+        })),
+      tap(()=>this.isLoading.next(false))
       );
     }
   }
